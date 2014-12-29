@@ -1,0 +1,5 @@
+<backends>
+    <backend name="mapreduce">
+        <instances>3</instances>
+    </backend>
+</backends>

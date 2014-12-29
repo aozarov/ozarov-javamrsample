@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         xsi:schemaLocation=
+         "http://java.sun.com/xml/ns/javaee
+          http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+
+  <servlet>
+    <servlet-name>PipelineServlet</servlet-name>
+    <servlet-class>
+      com.google.appengine.tools.pipeline.impl.servlets.PipelineServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PipelineServlet</servlet-name>
+    <url-pattern>/_ah/pipeline/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>mapreduce</servlet-name>
+    <servlet-class>
+      com.google.appengine.tools.mapreduce.MapReduceServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mapreduce</servlet-name>
+    <url-pattern>/mapreduce/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>randomcollisions</servlet-name>
+    <servlet-class>
+      com.google.appengine.demos.mapreduce.randomcollisions.CollisionFindingServlet
+    </servlet-class>
+      <init-param>
+          <param-name>gcs_bucket</param-name>
+          <param-value>dotted-virtue-478</param-value>
+      </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>randomcollisions</servlet-name>
+    <url-pattern>/randomcollisions</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>entitycount</servlet-name>
+    <servlet-class>
+      com.google.appengine.demos.mapreduce.entitycount.ExampleServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>entitycount</servlet-name>
+    <url-pattern>/entitycount</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>usingpipeline</servlet-name>
+    <servlet-class>
+      com.google.appengine.demos.mapreduce.randomcollisions.UsingPipelineServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>usingpipeline</servlet-name>
+    <url-pattern>/usingpipeline</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>fileupload</servlet-name>
+    <servlet-class>
+      testing.UploadServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>fileupload</servlet-name>
+    <url-pattern>/fileupload</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>filedelete</servlet-name>
+    <servlet-class>
+      testing.DeleteServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>filedelete</servlet-name>
+    <url-pattern>/filedelete</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>filecopy</servlet-name>
+    <servlet-class>
+      testing.CopyServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>filecopy</servlet-name>
+    <url-pattern>/filecopy</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>filecompose</servlet-name>
+    <servlet-class>
+      testing.ComposeServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>filecompose</servlet-name>
+    <url-pattern>/filecompose</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>filelist</servlet-name>
+    <servlet-class>
+      testing.ListServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>filelist</servlet-name>
+    <url-pattern>/filelist</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>imageurl</servlet-name>
+    <servlet-class>
+      testing.ImageUrlServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>imageurl</servlet-name>
+    <url-pattern>/imageurl</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>misctests</servlet-name>
+    <servlet-class>
+      testing.MiscTestsServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>misctests</servlet-name>
+    <url-pattern>/misctests</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>fileapi</servlet-name>
+    <servlet-class>
+      testing.FileApiServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>fileapi</servlet-name>
+    <url-pattern>/fileapi</url-pattern>
+  </servlet-mapping>
+
+  <!-- In this example we put an admin constraint, since kicking off a MapReduce
+    can use a significant amount of resources. -->
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>ozarov-javamrsample</web-resource-name>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+</web-app>

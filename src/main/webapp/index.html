@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Hello MapReduce</title>
+</head>
+
+<body>
+  <h1>Hello MapReduce!</h1>
+
+  <table>
+    <tr>
+      <td>This is an example Map Reduce that demos parallel computation. <br />
+        For the purposes of illustration this MapReduce looks for collisions in
+        Java's Random number generator. (There are not any.) <br /> Here a
+        collision is defined as multiple seed values that when next is called
+        produce the same output value. <br /> The input source is a range of
+        numbers to test, and any collisions are logged and written out to a file
+        in Google Cloud Storage. (Which in this case will be empty.) <br />
+        <a href="/randomcollisions">Random collisions example.</a>
+      </td>
+    </tr>
+    <tr>
+      <td>Entity count<br />
+        <a href="/entitycount">Entity count example.</a>
+      </td>
+    </tr>
+    <tr>
+      <td>Using Pipelines<br />
+        <a href="/usingpipeline">Using pipelines example.</a>
+      </td>
+    </tr>
+    <tr>
+      <td>Upload file TO GCS Example:
+      <form action="/fileupload" method="post" enctype="multipart/form-data">
+      GCS bucket:
+      <input type="text" name="bucket" size="30" value="ozarov-javamrsample.appspot.com">
+      File name:
+      <input type="text" name="filename" size="30">
+      <input type="file" name="datafile" size="40">
+      <input type="text" name="mimetype" size="20" value="text/plain">
+      <input type="submit" value="Upload file to GCS">
+      </form>
+      </td>
+    </tr>
+    <tr>
+      <td>Delete GCS file:
+      <form action="/filedelete" method="post" >
+      GCS bucket:
+      <input type="text" name="bucket" size="30" value="ozarov-javamrsample.appspot.com">
+      File name:
+      <input type="text" name="filename" size="30">
+      <input type="submit" value="Delete">
+      </form>
+      </td>
+    </tr>
+    <tr>
+      <td>Copy GCS file:
+      <form action="/filecopy" method="post" >
+      GCS bucket:
+      <input type="text" name="bucket" size="30" value="ozarov-javamrsample.appspot.com">
+      Source name:
+      <input type="text" name="source" size="30">
+      Destination name:
+      <input type="text" name="destination" size="30">
+      <input type="submit" value="Copy">
+      </form>
+      </td>
+    </tr>
+    <tr>
+      <td>Compose GCS file:
+      <form action="/filecompose" method="post" >
+      GCS bucket:
+      <input type="text" name="bucket" size="30" value="ozarov-javamrsample.appspot.com">
+      Source files (comma delimited):
+      <input type="text" name="source" size="40">
+      Destination name:
+      <input type="text" name="destination" size="30">
+      <input type="submit" value="Compose">
+      </form>
+      </td>
+    </tr>
+    <tr>
+      <td>Listing:
+      <form action="/filelist" method="post" >
+      GCS bucket:
+      <input type="text" name="bucket" size="30" value="ozarov-javamrsample.appspot.com">
+      <input type="submit" value="List">
+      </form>
+      </td>
+    </tr>
+    <tr>
+      <td>Image URL:
+      <form action="/imageurl" method="post" >
+      GCS bucket:
+      <input type="text" name="bucket" size="30" value="ozarov-javamrsample.appspot.com">
+      File name:
+      <input type="text" name="filename" size="30">
+      <input type="submit" value="Generate URL">
+      </form>
+      </td>
+    </tr>
+    <tr>
+      <td>Misc tests:
+      <form action="/misctests" method="post" >
+      <input type="submit" value="Test">
+      </form>
+      </td>
+    </tr>
+    <tr>
+      <td>File api tests:
+      <form action="/fileapi" method="get" >
+      <input type="submit" value="File Api">
+      </form>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
