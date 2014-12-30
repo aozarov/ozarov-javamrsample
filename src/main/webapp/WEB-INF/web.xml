@@ -156,6 +156,7 @@
 
   <!-- In this example we put an admin constraint, since kicking off a MapReduce
     can use a significant amount of resources. -->
+    <!--
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>ozarov-javamrsample</web-resource-name>
@@ -165,5 +166,14 @@
       <role-name>admin</role-name>
     </auth-constraint>
   </security-constraint>
-
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>ozarov-javamrsample</web-resource-name>
+      <url-pattern>/misctests</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>*</role-name>
+    </auth-constraint>
+  </security-constraint>
+ -->
 </web-app>

@@ -1,5 +1,6 @@
 package testing;
 
+import com.google.gcloud.AuthConfig;
 import com.google.gcloud.datastore.DatastoreService;
 import com.google.gcloud.datastore.DatastoreServiceFactory;
 import com.google.gcloud.datastore.DatastoreServiceOptions;
@@ -8,6 +9,8 @@ import com.google.gcloud.datastore.Key;
 import com.google.gcloud.datastore.KeyFactory;
 
 import java.io.IOException;
+import java.security.KeyStore;
+import java.security.PrivateKey;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,12 +29,25 @@ public class MiscTestsServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     try {
+      String password = req.getParameter("password");
+      if (password == null) {
+        password = "notasecret";
+      }
       //Queue queue = QueueFactory.getQueue("bad-queue");
       //QueueStatistics stats = queue.fetchStatistics();
       //resp.getWriter().println(stats.getQueueName());
       //resp.getWriter().println(stats.getEnforcedRate());
 
-      DatastoreServiceOptions options = DatastoreServiceOptions.builder().host("localhost:8080").build();
+      KeyStore keystore = KeyStore.getInstance("PKCS12");
+      keystore.load(getClass().getResourceAsStream("ozarov-javamrsample.p12"), password.toCharArray());
+      PrivateKey privateKey = (PrivateKey) keystore.getKey("privatekey", password.toCharArray());
+      System.out.println("loaded key " + privateKey);
+      AuthConfig authConfig = AuthConfig.createFor(
+          "189024820947-qvtj1o3r7hl8gqhuujt8gchjggjqla1v@developer.gserviceaccount.com", privateKey);
+      DatastoreServiceOptions options = DatastoreServiceOptions.builder()
+          .authConfig(authConfig)
+          .dataset("s~ozarov-javamrsample")
+          .build();
       DatastoreService datastore = DatastoreServiceFactory.getDefault(options);
       KeyFactory keyFactory = new KeyFactory(datastore);
       Key key = keyFactory.kind("new-kind").allocateId();
@@ -45,7 +61,6 @@ public class MiscTestsServlet extends HttpServlet {
       GetAccessTokenResult token = appIdentityService.getAccessToken(
           Collections.singleton("https://www.googleapis.com/auth/datastore"));
       System.out.println("KOKO. got token: " + token.toString() + ", expires on: " + token.getExpirationTime());
-
       String bucket = appIdentityService.getDefaultGcsBucketName();
       GcsService service = GcsServiceFactory.createGcsService();
       GcsFilename filename = new GcsFilename(bucket, req.getParameter("file"));
