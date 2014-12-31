@@ -31,31 +31,40 @@ public class MiscTestsServlet extends HttpServlet {
     try {
       String password = req.getParameter("password");
       if (password == null) {
-        password = "notasecret";
+        resp.getWriter().println("Missing password param");
+        return;
       }
+      char[] passwordChars = password.toCharArray();
+      KeyStore keystore = KeyStore.getInstance("PKCS12");
+      keystore.load(getClass().getResourceAsStream("ozarov-javamrsample.p12"), passwordChars);
+      PrivateKey privateKey = (PrivateKey) keystore.getKey("1", passwordChars);
+      AuthConfig authConfig = AuthConfig.createFor(
+          "189024820947-qvtj1o3r7hl8gqhuujt8gchjggjqla1v@developer.gserviceaccount.com", privateKey);
+      DatastoreServiceOptions options = DatastoreServiceOptions.builder()
+          .authConfig(authConfig)
+          .dataset("ozarov-javamrsample")
+          .build();
+      DatastoreService datastore = DatastoreServiceFactory.getDefault(options);
+      KeyFactory keyFactory = new KeyFactory(datastore);
+      Key key = keyFactory.kind("new-kind").allocateId();
+      datastore.add(Entity.builder(key).set("txt", "hello world1").build());
+      Entity entity = datastore.get(key);
+      resp.getWriter().println("entity: " + entity);
+
+      options = DatastoreServiceOptions.builder().build();
+      datastore = DatastoreServiceFactory.getDefault(options);
+      keyFactory = new KeyFactory(datastore);
+      key = keyFactory.kind("new-kind").allocateId();
+      datastore.add(Entity.builder(key).set("txt", "hello world2").build());
+      entity = datastore.get(key);
+      resp.getWriter().println("entity: " + entity);
+
+      /*
       //Queue queue = QueueFactory.getQueue("bad-queue");
       //QueueStatistics stats = queue.fetchStatistics();
       //resp.getWriter().println(stats.getQueueName());
       //resp.getWriter().println(stats.getEnforcedRate());
 
-      KeyStore keystore = KeyStore.getInstance("PKCS12");
-      keystore.load(getClass().getResourceAsStream("ozarov-javamrsample.p12"), password.toCharArray());
-      PrivateKey privateKey = (PrivateKey) keystore.getKey("privatekey", password.toCharArray());
-      System.out.println("loaded key " + privateKey);
-      AuthConfig authConfig = AuthConfig.createFor(
-          "189024820947-qvtj1o3r7hl8gqhuujt8gchjggjqla1v@developer.gserviceaccount.com", privateKey);
-      DatastoreServiceOptions options = DatastoreServiceOptions.builder()
-          .authConfig(authConfig)
-          .dataset("s~ozarov-javamrsample")
-          .build();
-      DatastoreService datastore = DatastoreServiceFactory.getDefault(options);
-      KeyFactory keyFactory = new KeyFactory(datastore);
-      Key key = keyFactory.kind("new-kind").allocateId();
-      datastore.add(Entity.builder(key).set("txt", "hello world").build());
-      Entity entity = datastore.get(key);
-      System.out.println("KOKO: " + entity);
-      resp.getWriter().println("entity: " + entity);
-      /*
       System.out.println("KOKO: " + System.getProperty("com.google.appengine.application.id"));
       AppIdentityService appIdentityService = AppIdentityServiceFactory.getAppIdentityService();
       GetAccessTokenResult token = appIdentityService.getAccessToken(
