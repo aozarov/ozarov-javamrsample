@@ -41,7 +41,7 @@ public class MiscTestsServlet extends HttpServlet {
       AuthCredentials authCredentials = AuthCredentials.createFor(
           "189024820947-qvtj1o3r7hl8gqhuujt8gchjggjqla1v@developer.gserviceaccount.com", privateKey);
       DatastoreServiceOptions options = DatastoreServiceOptions.builder()
-          .authConfig(authCredentials)
+          .authCredentials(authCredentials)
           .dataset("ozarov-javamrsample")
           .build();
       DatastoreService datastore = DatastoreServiceFactory.getDefault(options);
