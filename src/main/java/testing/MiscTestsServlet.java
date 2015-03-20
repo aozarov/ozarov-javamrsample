@@ -1,6 +1,6 @@
 package testing;
 
-import com.google.gcloud.AuthConfig;
+import com.google.gcloud.AuthCredentials;
 import com.google.gcloud.datastore.DatastoreService;
 import com.google.gcloud.datastore.DatastoreServiceFactory;
 import com.google.gcloud.datastore.DatastoreServiceOptions;
@@ -38,26 +38,26 @@ public class MiscTestsServlet extends HttpServlet {
       KeyStore keystore = KeyStore.getInstance("PKCS12");
       keystore.load(getClass().getResourceAsStream("ozarov-javamrsample.p12"), passwordChars);
       PrivateKey privateKey = (PrivateKey) keystore.getKey("1", passwordChars);
-      AuthConfig authConfig = AuthConfig.createFor(
+      AuthCredentials authCredentials = AuthCredentials.createFor(
           "189024820947-qvtj1o3r7hl8gqhuujt8gchjggjqla1v@developer.gserviceaccount.com", privateKey);
       DatastoreServiceOptions options = DatastoreServiceOptions.builder()
-          .authConfig(authConfig)
+          .authConfig(authCredentials)
           .dataset("ozarov-javamrsample")
           .build();
       DatastoreService datastore = DatastoreServiceFactory.getDefault(options);
-      KeyFactory keyFactory = new KeyFactory(datastore);
-      Key key = keyFactory.kind("new-kind").allocateId();
+      KeyFactory keyFactory = datastore.newKeyFactory();
+      Key key = datastore.allocateId(keyFactory.kind("new-kind").newKey());
       datastore.add(Entity.builder(key).set("txt", "hello world1").build());
       Entity entity = datastore.get(key);
-      resp.getWriter().println("entity: " + entity);
+      resp.getWriter().println("(1) entity: " + entity);
 
       options = DatastoreServiceOptions.builder().build();
       datastore = DatastoreServiceFactory.getDefault(options);
-      keyFactory = new KeyFactory(datastore);
-      key = keyFactory.kind("new-kind").allocateId();
+      keyFactory = datastore.newKeyFactory();
+      key = datastore.allocateId(keyFactory.kind("new-kind").newKey());
       datastore.add(Entity.builder(key).set("txt", "hello world2").build());
       entity = datastore.get(key);
-      resp.getWriter().println("entity: " + entity);
+      resp.getWriter().println("(2) entity: " + entity);
 
       /*
       //Queue queue = QueueFactory.getQueue("bad-queue");
