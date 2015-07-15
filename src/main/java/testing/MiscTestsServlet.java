@@ -1,5 +1,11 @@
 package testing;
 
+import com.google.appengine.api.modules.ModulesService;
+import com.google.appengine.api.modules.ModulesServiceFactory;
+import com.google.appengine.tools.cloudstorage.GcsFileOptions;
+import com.google.appengine.tools.cloudstorage.GcsFilename;
+import com.google.appengine.tools.cloudstorage.GcsService;
+import com.google.appengine.tools.cloudstorage.GcsServiceFactory;
 import com.google.gcloud.AuthCredentials;
 import com.google.gcloud.datastore.DatastoreService;
 import com.google.gcloud.datastore.DatastoreServiceFactory;
@@ -9,6 +15,8 @@ import com.google.gcloud.datastore.Key;
 import com.google.gcloud.datastore.KeyFactory;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 
@@ -28,6 +36,20 @@ public class MiscTestsServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+    if (true) {
+      GcsService service = GcsServiceFactory.createGcsService();
+      GcsFilename name = new GcsFilename("bucket", "file");
+      ByteBuffer content = StandardCharsets.UTF_8.encode("hello world");
+      service.createOrReplace(name, GcsFileOptions.getDefaultInstance(), content);
+      System.out.printf("Wrote file!!!");
+      return;
+    }
+    ModulesService modulesService = ModulesServiceFactory.getModulesService();
+    System.out.println("koko1");
+    String instanceId = modulesService.getCurrentInstanceId();
+    System.out.println("koko.instanceId: " + instanceId);
+    String hostname = modulesService.getInstanceHostname(null, null, instanceId);
+    System.out.println("koko.hostname: " + hostname);
     try {
       String password = req.getParameter("password");
       if (password == null) {

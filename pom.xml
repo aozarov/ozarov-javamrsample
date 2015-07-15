@@ -84,7 +84,7 @@
     <dependency>
       <groupId>com.google.appengine</groupId>
       <artifactId>appengine-api-1.0-sdk</artifactId>
-      <version>1.9.17</version>
+      <version>1.9.18</version>
     </dependency>
     <dependency>
       <groupId>com.google.appengine.tools</groupId>
@@ -143,8 +143,16 @@
       </plugin>
       <plugin>
         <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-maven-plugin</artifactId>
+        <version>1.9.23</version>
+        <configuration>
+        <port>8082</port>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>1.9.17</version>
+        <version>1.9.17a</version>
         <configuration>
         <port>8082</port>
         </configuration>
