@@ -89,6 +89,17 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>fileget</servlet-name>
+    <servlet-class>
+      testing.GetServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>fileget</servlet-name>
+    <url-pattern>/fileget</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>filecopy</servlet-name>
     <servlet-class>
       testing.CopyServlet

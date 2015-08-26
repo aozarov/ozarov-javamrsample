@@ -79,7 +79,7 @@
     <dependency>
       <groupId>com.google.gcloud</groupId>
       <artifactId>gcloud-java</artifactId>
-      <version>0.0.3</version>
+      <version>0.0.6</version>
     </dependency>
     <dependency>
       <groupId>com.google.appengine</groupId>
@@ -94,7 +94,7 @@
     <dependency>
       <groupId>com.google.appengine.tools</groupId>
       <artifactId>appengine-gcs-client</artifactId>
-      <version>0.4.3</version>
+      <version>0.5</version>
     </dependency>
     <dependency>
       <groupId>commons-fileupload</groupId>
@@ -147,12 +147,17 @@
         <version>1.9.23</version>
         <configuration>
         <port>8082</port>
+        <!--
+        <jvmFlags>
+          <jvmFlag>-Dblobstore.no_storage=true</jvmFlag>
+        </jvmFlags>
+        -->
         </configuration>
       </plugin>
       <plugin>
         <groupId>com.google.appengine</groupId>
         <artifactId>gcloud-maven-plugin</artifactId>
-        <version>1.9.17a</version>
+        <version>0.9.68.v20150707</version>
         <configuration>
         <port>8082</port>
         </configuration>

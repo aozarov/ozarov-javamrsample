@@ -6,15 +6,18 @@ import com.google.appengine.tools.cloudstorage.GcsFileOptions;
 import com.google.appengine.tools.cloudstorage.GcsFilename;
 import com.google.appengine.tools.cloudstorage.GcsService;
 import com.google.appengine.tools.cloudstorage.GcsServiceFactory;
+import com.google.apphosting.api.ApiProxy;
 import com.google.gcloud.AuthCredentials;
-import com.google.gcloud.datastore.DatastoreService;
-import com.google.gcloud.datastore.DatastoreServiceFactory;
-import com.google.gcloud.datastore.DatastoreServiceOptions;
+import com.google.gcloud.datastore.Datastore;
+import com.google.gcloud.datastore.DatastoreFactory;
+import com.google.gcloud.datastore.DatastoreOptions;
 import com.google.gcloud.datastore.Entity;
 import com.google.gcloud.datastore.Key;
 import com.google.gcloud.datastore.KeyFactory;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
@@ -37,6 +40,26 @@ public class MiscTestsServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     if (true) {
+
+      try {
+        System.out.println("before getting delegate");
+        Object delegate = ApiProxy.getDelegate();
+        System.out.println("Delegate: " + delegate);
+        Method m = delegate.getClass().getDeclaredMethod("getService", String.class);
+        m.setAccessible(true);
+        Object bs = m.invoke(delegate, "blobstore");
+        System.out.println("blobstore - " + bs);
+        Field f = bs.getClass().getDeclaredField("blobStorage");
+        f.setAccessible(true);
+        Object storage = f.get(bs);
+        System.out.println(storage);
+        if (storage != null)
+          return;
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+
+
       GcsService service = GcsServiceFactory.createGcsService();
       GcsFilename name = new GcsFilename("bucket", "file");
       ByteBuffer content = StandardCharsets.UTF_8.encode("hello world");
@@ -62,19 +85,19 @@ public class MiscTestsServlet extends HttpServlet {
       PrivateKey privateKey = (PrivateKey) keystore.getKey("1", passwordChars);
       AuthCredentials authCredentials = AuthCredentials.createFor(
           "189024820947-qvtj1o3r7hl8gqhuujt8gchjggjqla1v@developer.gserviceaccount.com", privateKey);
-      DatastoreServiceOptions options = DatastoreServiceOptions.builder()
+      DatastoreOptions options = DatastoreOptions.builder()
           .authCredentials(authCredentials)
-          .dataset("ozarov-javamrsample")
+          .projectId("ozarov-javamrsample")
           .build();
-      DatastoreService datastore = DatastoreServiceFactory.getDefault(options);
+      Datastore datastore = DatastoreFactory.instance().get(options);
       KeyFactory keyFactory = datastore.newKeyFactory();
       Key key = datastore.allocateId(keyFactory.kind("new-kind").newKey());
       datastore.add(Entity.builder(key).set("txt", "hello world1").build());
       Entity entity = datastore.get(key);
       resp.getWriter().println("(1) entity: " + entity);
 
-      options = DatastoreServiceOptions.builder().build();
-      datastore = DatastoreServiceFactory.getDefault(options);
+      options = DatastoreOptions.builder().build();
+      datastore = DatastoreFactory.instance().get(options);
       keyFactory = datastore.newKeyFactory();
       key = datastore.allocateId(keyFactory.kind("new-kind").newKey());
       datastore.add(Entity.builder(key).set("txt", "hello world2").build());

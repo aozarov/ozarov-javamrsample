@@ -45,14 +45,25 @@
       </td>
     </tr>
     <tr>
-      <td>Delete GCS file:
-      <form action="/filedelete" method="post" >
+      <td>Display GCS file:
+      <form action="/fileget" method="post" >
       GCS bucket:
       <input type="text" name="bucket" size="30" value="ozarov-javamrsample.appspot.com">
       File name:
       <input type="text" name="filename" size="30">
-      <input type="submit" value="Delete">
+      <input type="submit" value="Get">
       </form>
+      </td>
+    </tr>
+    <tr>
+      <td>Delete GCS file:
+        <form action="/filedelete" method="post" >
+          GCS bucket:
+          <input type="text" name="bucket" size="30" value="ozarov-javamrsample.appspot.com">
+          File name:
+          <input type="text" name="filename" size="30">
+          <input type="submit" value="Delete">
+        </form>
       </td>
     </tr>
     <tr>
