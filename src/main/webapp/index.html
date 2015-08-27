@@ -56,6 +56,17 @@
       </td>
     </tr>
     <tr>
+      <td>Display GCS file metadata:
+        <form action="/fileinfo" method="post" >
+          GCS bucket:
+          <input type="text" name="bucket" size="30" value="ozarov-javamrsample.appspot.com">
+          File name:
+          <input type="text" name="filename" size="30">
+          <input type="submit" value="Info">
+        </form>
+      </td>
+    </tr>
+    <tr>
       <td>Delete GCS file:
         <form action="/filedelete" method="post" >
           GCS bucket:
