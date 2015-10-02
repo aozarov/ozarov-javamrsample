@@ -1,6 +1,4 @@
-ozarov-javamrsample
+<h2>ozarov-javamrsample</h2>
 ===================
 
-Java MR example
-
-Just testing
+Java MR example.
